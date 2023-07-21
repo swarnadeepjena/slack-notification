@@ -24,7 +24,7 @@ jobs:
         # Replace "your-bucket-name" with the actual name of your S3 bucket
         aws s3 ls
   slackNotification:
-    needs: build_and_push
+    needs: check_s3_list
     runs-on: ubuntu-latest
     steps:
     - name: Slack Notification
