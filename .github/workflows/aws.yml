@@ -33,7 +33,6 @@ jobs:
       uses: rtCamp/action-slack-notify@v2
       with:
         status: 'Success'
-        #text: 'Congratulations! Your deployment was successful!'
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         SLACK_ICON: https://avatars.githubusercontent.com/u/1128392?s=48&v=4
@@ -46,7 +45,6 @@ jobs:
       uses: rtCamp/action-slack-notify@v2
       with:
         status: 'Failure'
-        # text: 'Oops! Deployment has failed!'
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         SLACK_ICON: https://avatars.githubusercontent.com/u/1128392?s=48&v=4
