@@ -21,7 +21,6 @@ jobs:
 
     - name: Check S3 Bucket Listing
       run: |
-        # Replace "your-bucket-name" with the actual name of your S3 bucket
         aws s3 ls
 
 
