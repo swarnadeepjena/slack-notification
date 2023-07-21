@@ -1,0 +1,27 @@
+name: Check S3 List
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  check_s3_list:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-south-1  # Replace with your desired AWS region
+
+    - name: Check S3 Bucket Listing
+      run: |
+        # Replace "your-bucket-name" with the actual name of your S3 bucket
+        aws s3 ls s3
+
+
