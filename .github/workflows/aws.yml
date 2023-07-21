@@ -16,20 +16,38 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        #aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        #aws-region: ap-south-1  # Replace with your desired AWS region
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-south-1  # Replace with your desired AWS region
 
     - name: Check S3 Bucket Listing
       run: |
         aws s3 ls
 
+
+  check_instances:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        run: |
+          aws configure set aws_access_key_id ${{ env.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default.region ap-south-1
+
+      - name: List EC2 Instances
+        run: |
+          aws ec2 describe-instances --query "Reservations[*].Instances[*].{ID:InstanceId, State:State.Name, Type:InstanceType}"
+
   slackNotification:
-    needs: check_s3_list
+    needs: check_instances
     runs-on: ubuntu-latest
     if: always()  # This ensures the Slack notification is sent regardless of success or failure of the check_s3_list job
     steps:
     - name: Slack Notification
-      if: ${{ needs.check_s3_list.result == 'success' }}
+      if: ${{ needs.check_instances.result == 'success' }}
       uses: rtCamp/action-slack-notify@v2
       with:
         status: 'Success'
@@ -42,7 +60,7 @@ jobs:
         
 
     - name: Slack Notification on Failure
-      if: ${{ needs.check_s3_list.result == 'failure' }}
+      if: ${{ needs.check_instances.result == 'failure' }}
       uses: rtCamp/action-slack-notify@v2
       with:
         status: 'Failure'
