@@ -23,6 +23,8 @@ jobs:
       run: |
         # Replace "your-bucket-name" with the actual name of your S3 bucket
         aws s3 ls
+
+
   slackNotification:
     needs: check_s3_list
     runs-on: ubuntu-latest
@@ -37,10 +39,7 @@ jobs:
         icon_emoji: ':white_check_mark:'
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-        # SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
-        # SLACK_ICON: https://avatars.githubusercontent.com/u/1128392?s=48&v=4
-        # SLACK_MESSAGE: 'Post Content :rocket:'
-        # SLACK_TITLE: Build & Deployed Sucessfully
+        
     - name: Slack Notification on Failure
       if: failure()
       uses: rtCamp/action-slack-notify@v2
