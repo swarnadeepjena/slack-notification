@@ -38,6 +38,7 @@ jobs:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         SLACK_ICON: https://avatars.githubusercontent.com/u/1128392?s=48&v=4
         SLACK_TITLE: Congratulations! Your deployment was successful
+        SLACK_MESSAGE: 'Post Content :rocket:'
         
 
     - name: Slack Notification on Failure
@@ -50,3 +51,4 @@ jobs:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         SLACK_ICON: https://avatars.githubusercontent.com/u/1128392?s=48&v=4
         SLACK_TITLE: Oops! Deployment has failed
+        SLACK_MESSAGE: 'Post Content :rocket:'
