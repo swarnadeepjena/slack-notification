@@ -16,7 +16,7 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        #aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ap-south-1  # Replace with your desired AWS region
 
     - name: Check S3 Bucket Listing
@@ -33,13 +33,11 @@ jobs:
       uses: rtCamp/action-slack-notify@v2
       with:
         status: 'Success'
-        text: 'Build and deployment were successful!'
-        username: 'GitHub Actions'
-        icon_emoji: ':white_check_mark:'
+        text: 'Congratulations! Your deployment was successful!'
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         SLACK_ICON: https://avatars.githubusercontent.com/u/1128392?s=48&v=4
-        SLACK_TITLE: Build & Deployed Sucessfully
+        SLACK_TITLE: Congratulations! Your deployment was successful
         
 
     - name: Slack Notification on Failure
@@ -47,10 +45,8 @@ jobs:
       uses: rtCamp/action-slack-notify@v2
       with:
         status: 'Failure'
-        text: 'Build or deployment failed!'
-        username: 'GitHub Actions'
-        icon_emoji: ':x:'
+        text: 'Oops! Deployment has failed!'
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         SLACK_ICON: https://avatars.githubusercontent.com/u/1128392?s=48&v=4
-        SLACK_TITLE: Build & Deployed Filed
+        SLACK_TITLE: Oops! Deployment has failed
