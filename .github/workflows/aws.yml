@@ -22,8 +22,6 @@ jobs:
     - name: Check S3 Bucket Listing
       run: |
         aws s3 ls
-
-
   check_instances:
     needs: check_s3_list
     runs-on: ubuntu-latest
@@ -37,19 +35,16 @@ jobs:
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set default.region ap-south-1
-
       - name: List EC2 Instances
         run: |
           aws ec2 describe-instances --query "Reservations[*].Instances[*].{ID:InstanceId, State:State.Name, Type:InstanceType}"
-
   slackNotification:
-    needs: [check_s3_list, check_instances]
+    needs: check_instances
     runs-on: ubuntu-latest
     if: always()  # This ensures the Slack notification is sent regardless of success or failure of the check_s3_list job
     steps:
     - name: Slack Notification
       if: ${{ needs.check_instances.result == 'success' }}
-      
       uses: rtCamp/action-slack-notify@v2
       with:
         status: 'Success'
@@ -59,22 +54,10 @@ jobs:
         SLACK_TITLE: Congratulations! Your deployment was successful
         SLACK_MESSAGE: 'Server URL-: vetzz.n.viewyoursite.net'
         SLACK_COLOR: 'good' # or a specific color like 'good' or '#ff00ff'
+        
 
-    - name: Slack Notification on Failure of check_s3_list:
-        if: ${{ needs.check_s3_list.result == 'failure' }}
-        uses: rtCamp/action-slack-notify@v2
-        with:
-          status: 'Failure'
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_ICON: https://avatars.githubusercontent.com/u/1128392?s=48&v=4
-          SLACK_TITLE: Oops! check_s3_listt has failed
-          SLACK_MESSAGE: 'Server URL-: vetzz.n.viewyoursite.net'
-          SLACK_COLOR: '#ff0000' # or a specific color like 'good' or '#ff00ff'        
-
-    - name: Slack Notification on Failure of check_instances
+    - name: Slack Notification on Failure
       if: ${{ needs.check_instances.result == 'failure' }}
-
       uses: rtCamp/action-slack-notify@v2
       with:
         status: 'Failure'
@@ -85,7 +68,14 @@ jobs:
         SLACK_MESSAGE: 'Server URL-: vetzz.n.viewyoursite.net'
         SLACK_COLOR: '#ff0000' # or a specific color like 'good' or '#ff00ff'
 
-
-
-
-  
+    - name: Slack Notification on Failure check_s3_list
+      if: ${{ needs.check_s3_list.result == 'failure' }}
+      uses: rtCamp/action-slack-notify@v2
+      with:
+        status: 'Failure'
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+        SLACK_ICON: https://avatars.githubusercontent.com/u/1128392?s=48&v=4
+        SLACK_TITLE: Oops! check_s3_list has failed
+        SLACK_MESSAGE: 'Server URL-: vetzz.n.viewyoursite.net'
+        SLACK_COLOR: '#ff0000' # or a specific color like 'good' or '#ff00ff'
