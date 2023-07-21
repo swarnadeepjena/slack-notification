@@ -59,11 +59,21 @@ jobs:
         SLACK_TITLE: Congratulations! Your deployment was successful
         SLACK_MESSAGE: 'Server URL-: vetzz.n.viewyoursite.net'
         SLACK_COLOR: 'good' # or a specific color like 'good' or '#ff00ff'
-        
 
-    - name: Slack Notification on Failure
-      if: ${{ needs.check_instances.result == 'failure'  || needs.check_instances.result == 'failure' }}
-   
+    - name: Slack Notification on Failure of check_s3_list:
+        if: ${{ needs.check_s3_list.result == 'failure' }}
+        uses: rtCamp/action-slack-notify@v2
+        with:
+          status: 'Failure'
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_ICON: https://avatars.githubusercontent.com/u/1128392?s=48&v=4
+          SLACK_TITLE: Oops! check_s3_listt has failed
+          SLACK_MESSAGE: 'Server URL-: vetzz.n.viewyoursite.net'
+          SLACK_COLOR: '#ff0000' # or a specific color like 'good' or '#ff00ff'        
+
+    - name: Slack Notification on Failure of check_instances
+      if: ${{ needs.check_instances.result == 'failure' }}
 
       uses: rtCamp/action-slack-notify@v2
       with:
@@ -71,6 +81,11 @@ jobs:
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         SLACK_ICON: https://avatars.githubusercontent.com/u/1128392?s=48&v=4
-        SLACK_TITLE: Oops! Deployment has failed
+        SLACK_TITLE: Oops! check_instances has failed
         SLACK_MESSAGE: 'Server URL-: vetzz.n.viewyoursite.net'
         SLACK_COLOR: '#ff0000' # or a specific color like 'good' or '#ff00ff'
+
+
+
+
+  
