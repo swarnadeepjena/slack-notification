@@ -38,6 +38,9 @@ jobs:
         icon_emoji: ':white_check_mark:'
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+        SLACK_ICON: https://avatars.githubusercontent.com/u/1128392?s=48&v=4
+        SLACK_TITLE: Build & Deployed Sucessfully
+        
 
     - name: Slack Notification on Failure
       if: ${{ needs.check_s3_list.result == 'failure' }}
@@ -49,3 +52,5 @@ jobs:
         icon_emoji: ':x:'
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+        SLACK_ICON: https://avatars.githubusercontent.com/u/1128392?s=48&v=4
+        SLACK_TITLE: Build & Deployed Filed
