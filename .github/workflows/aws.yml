@@ -43,7 +43,7 @@ jobs:
           aws ec2 describe-instances --query "Reservations[*].Instances[*].{ID:InstanceId, State:State.Name, Type:InstanceType}"
 
   slackNotification:
-    needs: check_instances
+    needs: [check_s3_list, check_instances]
     runs-on: ubuntu-latest
     if: always()  # This ensures the Slack notification is sent regardless of success or failure of the check_s3_list job
     steps:
