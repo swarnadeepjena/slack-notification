@@ -38,7 +38,7 @@ jobs:
         SLACK_ICON: https://avatars.githubusercontent.com/u/1128392?s=48&v=4
         SLACK_TITLE: Congratulations! Your deployment was successful
         SLACK_MESSAGE: 'Server URL-: vetzz.n.viewyoursite.net'
-        SLACK_COLOR: ${{ job.status }}# or a specific color like 'good' or '#ff00ff'
+        SLACK_COLOR: 'good' # or a specific color like 'good' or '#ff00ff'
         
 
     - name: Slack Notification on Failure
@@ -48,7 +48,7 @@ jobs:
         status: 'Failure'
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-        SLACK_ICON: https://library.kissclipart.com/20181123/hqe/kissclipart-mail-error-icon-clipart-computer-icons-email-0b0e6595c8731682.jpg
+        SLACK_ICON: https://avatars.githubusercontent.com/u/1128392?s=48&v=4
         SLACK_TITLE: Oops! Deployment has failed
         SLACK_MESSAGE: 'Server URL-: vetzz.n.viewyoursite.net'
-        SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+        SLACK_COLOR: '#ff0000' # or a specific color like 'good' or '#ff00ff'
