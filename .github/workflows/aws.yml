@@ -15,8 +15,8 @@ jobs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        #aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        #aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ap-south-1  # Replace with your desired AWS region
 
     - name: Check S3 Bucket Listing
@@ -38,7 +38,7 @@ jobs:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         SLACK_ICON: https://avatars.githubusercontent.com/u/1128392?s=48&v=4
         SLACK_TITLE: Congratulations! Your deployment was successful
-        SLACK_MESSAGE: 'Post Content :rocket:'
+        SLACK_MESSAGE: 'demo'
         
 
     - name: Slack Notification on Failure
@@ -51,4 +51,4 @@ jobs:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         SLACK_ICON: https://avatars.githubusercontent.com/u/1128392?s=48&v=4
         SLACK_TITLE: Oops! Deployment has failed
-        SLACK_MESSAGE: 'Post Content :rocket:'
+        SLACK_MESSAGE: 'demo-2'
