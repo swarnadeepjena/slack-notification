@@ -25,30 +25,30 @@ jobs:
         aws s3 ls
 
 
-  slackNotification:
-    needs: check_s3_list
-    runs-on: ubuntu-latest
-    steps:
-    - name: Slack Notification
-      if: success()
-      uses: rtCamp/action-slack-notify@v2
-      with:
-        status: 'Success'
-        text: 'Build and deployment were successful!'
-        username: 'GitHub Actions'
-        icon_emoji: ':white_check_mark:'
-      env:
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-        
-    - name: Slack Notification on Failure
-      if: failure()
-      uses: rtCamp/action-slack-notify@v2
-      with:
-        status: 'Failure'
-        text: 'Build or deployment failed!'
-        username: 'GitHub Actions'
-        icon_emoji: ':x:'
-      env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+#   slackNotification:
+#     needs: check_s3_list
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: Slack Notification
+#       if: success()
+#       uses: rtCamp/action-slack-notify@v2
+#       with:
+#         status: 'Success'
+#         text: 'Build and deployment were successful!'
+#         username: 'GitHub Actions'
+#         icon_emoji: ':white_check_mark:'
+#       env:
+#         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+#     - name: Slack Notification on Failure
+#       if: failure()
+#       uses: rtCamp/action-slack-notify@v2
+#       with:
+#         status: 'Failure'
+#         text: 'Build or deployment failed!'
+#         username: 'GitHub Actions'
+#         icon_emoji: ':x:'
+#       env:
+#           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
 
 
