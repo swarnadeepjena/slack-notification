@@ -1,4 +1,4 @@
-name: Check S3 List
+name: Check S3 List and Notify on Slack
 on:
   push:
     branches:
@@ -23,13 +23,13 @@ jobs:
       run: |
         aws s3 ls
 
-
   slackNotification:
     needs: check_s3_list
     runs-on: ubuntu-latest
+    if: always()  # This ensures the Slack notification is sent regardless of success or failure of the check_s3_list job
     steps:
     - name: Slack Notification
-      if: success()
+      if: ${{ needs.check_s3_list.result == 'success' }}
       uses: rtCamp/action-slack-notify@v2
       with:
         status: 'Success'
@@ -40,7 +40,7 @@ jobs:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
 
     - name: Slack Notification on Failure
-      if: failure()
+      if: ${{ needs.check_s3_list.result == 'failure' }}
       uses: rtCamp/action-slack-notify@v2
       with:
         status: 'Failure'
@@ -48,7 +48,4 @@ jobs:
         username: 'GitHub Actions'
         icon_emoji: ':x:'
       env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-
-
-          ##
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
